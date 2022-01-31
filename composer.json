@@ -1,0 +1,15 @@
+{
+	"autoload": {
+		"psr-4": {
+			"Shopping\\": "src/",
+			"Shopping\\Test\\": "tests/"
+		}
+	},
+
+	"require-dev": {
+        "phpunit/phpunit": "^9.5"
+	},
+
+	"require": {
+	}
+}
