@@ -25,41 +25,41 @@ class ShoppingCartModel
 	];
 
 	public function __construct()
-    {
-        $this->selectedProducts = null;
-        if ((session_status() === PHP_SESSION_ACTIVE) && array_key_exists('selection', $_SESSION))
-            $this->selectedProducts = unserialize($_SESSION['selection']);
-    }
-
-    /**
-     * Get the product items
-     * @return array
-     */
-    public function productCosts() :array
-    {
-        return self::$productCosts;
-    }
-
-    /**
-	 * Get the items in the cart.
-	 * @return array
-	 */
-	public function selectedProducts() :?array
 	{
-	    return $this->selectedProducts;
+		$this->selectedProducts = null;
+		if ((session_status() === PHP_SESSION_ACTIVE) && array_key_exists('selection', $_SESSION))
+			$this->selectedProducts = unserialize($_SESSION['selection']);
 	}
 
 	/**
-	 * Find an item by name in the product list.
-	 * @param string $itemName
-	 * @return array|null
+	 * Get the product items
+	 * @return array
 	 */
+	public function productCosts() :array
+	{
+		return self::$productCosts;
+	}
+
+	/**
+	 * Get the items in the cart.
+	 * @return array
+	*/
+	public function selectedProducts() :?array
+	{
+		return $this->selectedProducts;
+	}
+
+	/**
+	* Find an item by name in the product list.
+	* @param string $itemName
+	* @return array|null
+	*/
 	public function productCost(string $itemName) :?float
 	{
-		foreach (self::$productCosts as $name => $cost) {
-			if ($itemName == $name) {
+		foreach (self::$productCosts as $name => $cost) 
+		{
+			if ($itemName == $name)
 				return (float)$cost;
-			}
 		}
 		return null;
 	}
@@ -73,12 +73,14 @@ class ShoppingCartModel
 	 */
 	public function add(string $itemName, int $qty) :bool
 	{
-	    $cost = $this->productCost($itemName);
-		if ($cost) {
-            if ($this->selectedProducts && array_key_exists($itemName, $this->selectedProducts))
-                $this->selectedProducts[$itemName] += $qty;
+		$cost = $this->productCost($itemName);
+		if ($cost)
+		{
+			if ($this->selectedProducts && array_key_exists($itemName, $this->selectedProducts))
+				$this->selectedProducts[$itemName] += $qty;
 			else
 				$this->selectedProducts[$itemName] = $qty;
+
 			$_SESSION['selection'] = serialize($this->selectedProducts);
 			return true;
 		}
@@ -89,11 +91,12 @@ class ShoppingCartModel
 	 * Remove a product from the cart
 	 * @param string $itemName
 	 * @return bool
-	 */
+	*/
 	public function remove(string $itemName) :bool
 	{
-        $cost = $this->productCost($itemName);
-        if ($cost) {
+		$cost = $this->productCost($itemName);
+		if ($cost)
+		{
 			unset($this->selectedProducts[$itemName]);
 			$_SESSION['selection'] = serialize($this->selectedProducts);
 			return true;

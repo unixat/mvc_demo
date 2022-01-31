@@ -12,15 +12,15 @@ namespace Shopping\Views;
 class ShoppingCartView
 {
 	protected array $products;
-    protected ?array $selectedProducts;
+	protected ?array $selectedProducts;
 	protected string $url;
 
 	public function __construct(string $url, array $products, ?array $selectedProducts)
-    {
-        $this->url = $url;
-        $this->products = $products;
-        $this->selectedProducts = $selectedProducts;
-    }
+	{
+		$this->url = $url;
+		$this->products = $products;
+		$this->selectedProducts = $selectedProducts;
+	}
 
 	/**
 	 * list all the products available for selection.
@@ -37,7 +37,6 @@ class ShoppingCartView
 				echo "<th>Cost</th>";
 				echo "</thead>";
 			}		
-
 			echo "<tr>";
 			echo "<td>" . $name . "</td>";
 			echo "<td>" . number_format((float)$cost, 2) . "</td>";
@@ -52,16 +51,15 @@ class ShoppingCartView
 	 */
 	public function listSelectedItems()
 	{
-        if (!$this->selectedProducts)
-        {
-            error_log('No SELECTED FOUND!!!'. PHP_EOL);
-            return;
-        }
+		if (!$this->selectedProducts)
+		{
+			error_log('No SELECTED FOUND!!!'. PHP_EOL);
+			return;
+		}
 
 		$total = 0;
 		$first = true;
 		foreach ($this->selectedProducts as $name => $qty) {
-		    error_log('Product: ' . $name . ' qty:' . $qty . PHP_EOL);
 			if ($first && $qty) {
 				$first = false;
 				echo "<h2>Selected Items</h2>";
@@ -73,16 +71,16 @@ class ShoppingCartView
 				echo "</thead>";
 			}
 			if ($qty) {
-                echo "<tr>";
-                echo "<td>" . $name . "</td>";
-                echo "<td>" . number_format($qty, 2) . "</td>";
-                echo "<td>" . $qty . "</td>";
-                $itemTotal = round($qty * (float)$this->products[$name], 2);
-                $total += $itemTotal;
-                echo "<td>" . number_format($itemTotal, 2) . "</td>";
-                echo "<td>" . '<a href="' . $this->url . '?f=remove&p=' . $name . '">Remove</a></td>';
-                echo "</tr>";
-            }
+				echo "<tr>";
+				echo "<td>" . $name . "</td>";
+				echo "<td>" . number_format($qty, 2) . "</td>";
+				echo "<td>" . $qty . "</td>";
+				$itemTotal = round($qty * (float)$this->products[$name], 2);
+				$total += $itemTotal;
+				echo "<td>" . number_format($itemTotal, 2) . "</td>";
+				echo "<td>" . '<a href="' . $this->url . '?f=remove&p=' . $name . '">Remove</a></td>';
+				echo "</tr>";
+			}
 		}
 		if ($total > 0.005) {
 			echo "<tr>";

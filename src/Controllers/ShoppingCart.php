@@ -19,40 +19,39 @@ class ShoppingCart
 {
 	public function __construct($sessionHandling = true)
 	{
-	    // this should always be done first!
-        if ($sessionHandling)
-            session_start();
+		// this should always be done first!
+		if ($sessionHandling)
+			session_start();
 
-        $model = new ShoppingCartModel();
-        $products = $model->productCosts();
+		$model = new ShoppingCartModel();
+		$products = $model->productCosts();
 		$url = $this->siteUrl();
 		$valid = true;
 
 		// Validate user request
 		list($command, $item) = $this->parseQueryString();
-		error_log('command:' . $command . ' item:' . $item. PHP_EOL);
 		if ($command && $item)
 		{
-            switch ($command)
-            {
-                case 'add':     $valid = $model->add($item, 1); break;
-                case 'remove':  $valid = $model->remove($item);      break;
-            }
-        }
+			switch ($command)
+			{
+				case 'add':     $valid = $model->add($item, 1);	break;
+				case 'remove':  $valid = $model->remove($item);	break;
+			}
+		}
 
-        // output view if request is valid
-        if ($valid)
-        {
-            $view = new ShoppingCartView($url, $products, $model->selectedProducts());
-            $view->listProducts();
-            $view->listSelectedItems();
-        }
-        else
-            error_log('Something went wrong: ' . $item . PHP_EOL);
+		// output view if request is valid
+		if ($valid)
+		{
+			$view = new ShoppingCartView($url, $products, $model->selectedProducts());
+			$view->listProducts();
+			$view->listSelectedItems();
+		}
+		else
+			error_log('Something went wrong: ' . $item . PHP_EOL);
 	}
 
 	protected function siteUrl(): string
-    {
+	{
 		static $url = 'http://';
 		if (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] != 'off') {
 			$url = 'https://';
@@ -61,12 +60,13 @@ class ShoppingCart
 	}
 
 	protected function parseQueryString(): array
-    {
+	{
 		$query = parse_url($_SERVER['REQUEST_URI'], PHP_URL_QUERY);
 		$command = $item = null;
 
-        // example query string: ?f=add&p=Bandsaw
-		if ($query) {
+		// example query string: ?f=add&p=Bandsaw
+		if ($query)
+		{
 			$qsa = explode('&', $query);
 			if (count($qsa) > 1) {
 				$commandQueryString = explode('=', $qsa[0]);
